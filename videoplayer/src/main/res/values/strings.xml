@@ -1,0 +1,1 @@
+<resources>    <string name="app_name">videoplayer</string>    <string name="mobile_net_hint" translatable="false">正在使用非WIFI流量，播放将产生流量费用</string>    <string name="network_error" translatable="false">请检查您的网络设置！</string></resources>

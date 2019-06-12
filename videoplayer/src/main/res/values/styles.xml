@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><resources>    <style name="TextShadowStyle">        <item name="android:shadowColor">#99000000</item>        <item name="android:shadowDy">0.5</item>        <item name="android:shadowRadius">2</item>    </style>    <style name="SeekBarStyle">    </style></resources>

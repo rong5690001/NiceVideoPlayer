@@ -1,4 +1,4 @@
-package com.chinaredstar.videoplayer;
+package com.rong.videoplayer;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,12 +11,10 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 
 import java.util.Locale;
@@ -121,7 +119,7 @@ public class VideoPlayer extends RelativeLayout implements IVideoPlayer,
             mTextureView.setSurfaceTextureListener(this);
             LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                     , ViewGroup.LayoutParams.MATCH_PARENT);
-            params.addRule(Gravity.CENTER);
+            params.addRule(CENTER_IN_PARENT, TRUE);
             mContrainer.addView(mTextureView, 0, params);
             mContrainer.setBackgroundColor(Color.BLACK);
             Log.d(TAG, "initTextureView");
@@ -559,8 +557,6 @@ public class VideoPlayer extends RelativeLayout implements IVideoPlayer,
         }
         //设置屏幕全屏
         final Activity activity = (Activity) mContext;
-        //禁止返回关闭
-//        activity.setEnableBackLayout(false);
         //全屏处理
         fullScreen(true);
         //列表中播放的时候，需要将播放器添加到顶层view中
@@ -570,25 +566,12 @@ public class VideoPlayer extends RelativeLayout implements IVideoPlayer,
             final LayoutParams params = new LayoutParams(
                     LayoutParams.MATCH_PARENT
                     , LayoutParams.MATCH_PARENT);
-            measureTextureView();
+//            measureTextureView();
             contentView.addView(mContrainer, params);
 
-//            contentView.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    final LayoutParams params = new LayoutParams(
-//                            LayoutParams.MATCH_PARENT
-//                            , LayoutParams.MATCH_PARENT);
-//                    measureTextureView();
-//                    contentView.addView(mContrainer, params);
-//                }
-//            });
         }
         //旋转屏幕
         rotateScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
-//                , WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mCurrentMode = MODE_FULL_SCREEN;
         if (mMediaController != null) {
             mMediaController.onPlayModeChanged(mCurrentMode);
@@ -606,12 +589,8 @@ public class VideoPlayer extends RelativeLayout implements IVideoPlayer,
             }
             //设置屏幕全屏
             Activity activity = (Activity) mContext;
-            //开户返回关闭
-//            activity.setEnableBackLayout(false);
             //全屏处理
             fullScreen(false);
-//            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             //列表中播放的时候，将播放器添加到原来的view中
             if (isInList()) {
                 ViewGroup contentView = activity.findViewById(android.R.id.content);
@@ -619,7 +598,7 @@ public class VideoPlayer extends RelativeLayout implements IVideoPlayer,
                 LayoutParams params = new LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
-                measureTextureView();
+//                measureTextureView();
                 this.addView(mContrainer, params);
             }
             //旋转屏幕
@@ -762,15 +741,15 @@ public class VideoPlayer extends RelativeLayout implements IVideoPlayer,
             旋转后VideoPlayer宽高比有可能发生改变视频会被拉伸，
             需要重新计算textureView的宽高
          */
-        mTextureView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (mTextureView != null) {
-                    mTextureView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    mTextureView.updateTextureViewSizeCenter();
-                }
-            }
-        });
+//        mTextureView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                if (mTextureView != null) {
+//                    mTextureView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//                    mTextureView.updateTextureViewSizeCenter();
+//                }
+//            }
+//        });
     }
 
     /**

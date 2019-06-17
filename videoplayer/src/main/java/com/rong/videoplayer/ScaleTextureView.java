@@ -1,8 +1,6 @@
-package com.chinaredstar.videoplayer;
+package com.rong.videoplayer;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -36,27 +34,26 @@ public class ScaleTextureView extends TextureView {
 
     }
 
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        int width = MeasureSpec.getSize(widthMeasureSpec);
-//        int height = MeasureSpec.getSize(heightMeasureSpec);
-//
-//        Context context = getContext();
-//        if (context instanceof Activity) {
-//            boolean isFullScreen = (context.getResources().getConfiguration().orientation ==
-//                    Configuration.ORIENTATION_LANDSCAPE);
-//            float scale = 9f / 16f;
-//            if (isFullScreen) {
-//                width = (int) (sScreenHeight / scale);
-//                height = sScreenHeight;
-//            } else {
-//                height = (int) (width * scale);
-//            }
-//        }
-//
-//        setMeasuredDimension(width, height);
-//    }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        if (mVideoWidth != 0f && mVideoHeight != 0f) {
+            float sx = (float) width / mVideoWidth;
+            float sy = (float) height / mVideoHeight;
+            float videoScale = mVideoWidth / mVideoHeight;
+            //x、y轴，按缩放比小的为基准
+            if (sx > sy) {
+                width = (int) (height * videoScale);
+            } else {
+                height = (int) (width / videoScale);
+            }
+        }
+
+        setMeasuredDimension(width, height);
+    }
 
     /**
      * 设置视频的宽高
@@ -67,10 +64,12 @@ public class ScaleTextureView extends TextureView {
     public void setVideoWidth(float videoWidth, float videoHeight) {
         mVideoWidth = videoWidth;
         mVideoHeight = videoHeight;
-        updateTextureViewSizeCenter();
+        requestLayout();
+//        updateTextureViewSizeCenter();
     }
 
     //重新计算video的显示位置，让其全部显示并据中
+    @Deprecated
     public void updateTextureViewSizeCenter() {
         if (mVideoWidth == 0 || mVideoHeight == 0) {
             Log.e("ScaleTextureView:", "videoWidth,videoHeight为0");
@@ -83,10 +82,12 @@ public class ScaleTextureView extends TextureView {
         Matrix matrix = new Matrix();
 
         //第1步:把视频区移动到View区,使两者中心点重合.
-        matrix.preTranslate((getMeasuredWidth() - mVideoWidth) / 2f, (getMeasuredHeight() - mVideoHeight) / 2f);
+        matrix.preTranslate((getMeasuredWidth() - mVideoWidth) / 2f,
+                (getMeasuredHeight() - mVideoHeight) / 2f);
 
         //第2步:因为默认视频是fitXY的形式显示的,所以首先要缩放还原回来.
-        matrix.preScale(mVideoWidth / (float) getMeasuredWidth(), mVideoHeight / (float) getMeasuredHeight());
+        matrix.preScale(mVideoWidth / (float) getMeasuredWidth(),
+                mVideoHeight / (float) getMeasuredHeight());
 
         //第3步,等比例放大或缩小,直到视频区的一边和View一边相等.如果另一边和view的一边不相等，则留下空隙
         if (sx >= sy) {

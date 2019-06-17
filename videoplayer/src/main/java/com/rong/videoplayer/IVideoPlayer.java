@@ -1,4 +1,4 @@
-package com.chinaredstar.videoplayer;
+package com.rong.videoplayer;
 
 import android.net.ConnectivityManager;
 

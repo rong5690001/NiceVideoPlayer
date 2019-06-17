@@ -1,4 +1,4 @@
-package com.chinaredstar.videoplayer.mediaplayer;
+package com.rong.videoplayer.mediaplayer;
 
 /*
  * Copyright (C) 2013-2014 Zhang Rui <bbcallen@gmail.com>
@@ -15,17 +15,6 @@ package com.chinaredstar.videoplayer.mediaplayer;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.net.Uri;
-import android.os.Build;
-import android.view.Surface;
-import android.view.SurfaceHolder;
-
-import java.io.FileDescriptor;
-import java.io.IOException;
-import java.util.Map;
 
 //import tv.danmaku.ijk.media.player.MediaInfo;
 //import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
